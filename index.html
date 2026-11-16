@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Q-CUBIC Works">
+<title>Q-CUBIC Works</title>
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<style>html,body{margin:0;height:100%;background:#fff;font-family:system-ui,sans-serif}#ld{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:#666;font-size:15px}iframe{position:fixed;inset:0;width:100%;height:100%;border:0}</style>
+</head>
+<body>
+<div id="ld">Opening Q-CUBIC Works…</div>
+<script>
+/* Q-CUBIC Works loader: fetches the app screens from the script and shows them right here on this page,
+   so Google's grey "created by a Google Apps Script user" bar never appears.
+   The screens are kept on the device, so the app opens at once and updates itself quietly. */
+(function(){
+  var U='https://script.google.com/macros/s/AKfycbzUThmR0hZ6Ynd0_IeMZK95zonb-mabjg9FQvd1O33iqBrg4MhpK9RTxed5eicXcyw5Kw/exec';
+  var KH='qhr_page_html', KV='qhr_page_v';
+  function get(k){ try{ return localStorage.getItem(k)||''; }catch(e){ return ''; } }
+  function put(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function json(q){ return fetch(U+'?page='+q+'&t='+Date.now(),{redirect:'follow',credentials:'omit'}).then(function(r){ if(!r.ok) throw new Error('http'); return r.json(); }); }
+  function show(html){ document.open(); document.write(html); document.close(); }
+  function frame(){ document.body.innerHTML='<iframe src="'+U+'" title="Q-CUBIC Works" allow="geolocation; camera; microphone; clipboard-write"></iframe>'; }
+  var html=get(KH), v=get(KV);
+  if(html && v){
+    /* check for a newer version in the background; it is used the next time the app opens */
+    json('v').then(function(j){ if(j && j.v && j.v!==v) return json('1').then(function(n){ if(n && n.html){ put(KH,n.html); put(KV,n.v); } }); }).catch(function(){});
+    show(html);
+  } else {
+    json('1').then(function(j){ if(!j || !j.html) throw new Error('empty'); put(KH,j.html); put(KV,j.v); show(j.html); }).catch(frame);
+  }
+})();
+</script>
+</body>
+</html>
