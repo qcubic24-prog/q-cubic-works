@@ -24,7 +24,11 @@
   function get(k){ try{ return localStorage.getItem(k)||''; }catch(e){ return ''; } }
   function put(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
   function json(q){ return fetch(U+'?page='+q+'&t='+Date.now(),{redirect:'follow',credentials:'omit'}).then(function(r){ if(!r.ok) throw new Error('http'); return r.json(); }); }
-  function show(html){ document.open(); document.write(html); document.close(); }
+  function show(html){
+    document.open(); document.write(html); document.close();
+    /* the app screens carry no title or icon of their own, so set them again for the browser tab */
+    try{ if(!document.title) document.title='Q-CUBIC Works'; var l=document.createElement('link'); l.rel='icon'; l.type='image/png'; l.href='icon.png'; document.head.appendChild(l); }catch(e){}
+  }
   function frame(){ document.body.innerHTML='<iframe src="'+U+'" title="Q-CUBIC Works" allow="geolocation; camera; microphone; clipboard-write"></iframe>'; }
   var html=get(KH), v=get(KV);
   if(html && v){
