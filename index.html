@@ -34,7 +34,8 @@
   if(html && v){
     /* check for a newer version in the background; it is used the next time the app opens */
     json('v').then(function(j){ if(j && j.v && j.v!==v) return json('1').then(function(n){ if(n && n.html){ put(KH,n.html); put(KV,n.v); } }); }).catch(function(){});
-    show(html);
+    /* wait until this small page has finished loading, so the app screens replace it completely */
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ show(html); }); else show(html);
   } else {
     json('1').then(function(j){ if(!j || !j.html) throw new Error('empty'); put(KH,j.html); put(KV,j.v); show(j.html); }).catch(frame);
   }
